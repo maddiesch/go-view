@@ -1,0 +1,6 @@
+{{ define "body" }}
+
+<h1>Hello {{ .Data.Greeting }}!</h1>
+<p>I'm an index template</p>
+
+{{ end }}

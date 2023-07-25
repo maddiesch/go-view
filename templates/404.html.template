@@ -1,0 +1,8 @@
+<html>
+  <body>
+    <h1>Not Found</h1>
+    {{ if not (eq "" .Data.Message) }}
+      <p>{{ .Data.Message }}</p>
+    {{ end }}
+  </body>
+</html>
