@@ -1,0 +1,11 @@
+{{ define "body" }}
+
+<h1>inGroupsOf</h1>
+{{ range $group := inGroupsOf .Data.NumberList 3 }}
+  <p>Group:
+  {{- range $num := $group }}
+    {{- $num -}},
+  {{- end }}</p>
+{{ end }}
+
+{{ end }}

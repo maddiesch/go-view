@@ -11,6 +11,7 @@ type TemplateRenderer struct {
 	fs       fs.FS
 	Layout   TemplateLayout
 	ViewPath string
+	FuncMap  map[string]any
 }
 
 type TemplateLayout struct {
@@ -26,6 +27,9 @@ func NewTemplateRenderer(fs fs.FS) *TemplateRenderer {
 			Glob: []string{"layout/*.template"},
 			Name: "layout",
 		},
+		FuncMap: map[string]any{
+			"inGroupsOf": InGroupsOf,
+		},
 	}
 }
 
@@ -36,7 +40,7 @@ type RenderContext struct {
 }
 
 func (r *TemplateRenderer) RenderWithName(w io.Writer, name string, data any, include ...string) error {
-	t, err := template.ParseFS(r.fs, include...)
+	t, err := template.New(name).Funcs(r.FuncMap).ParseFS(r.fs, include...)
 	if err != nil {
 		return err
 	}
@@ -51,10 +55,11 @@ func (r *TemplateRenderer) RenderWithName(w io.Writer, name string, data any, in
 func (r *TemplateRenderer) RenderWithLayout(w io.Writer, name string, data any) error {
 	name = r.createTemplateName(name)
 	patterns := append(r.Layout.Glob, name)
-	t, err := template.ParseFS(r.fs, patterns...)
+	t, err := template.New(name).Funcs(r.FuncMap).ParseFS(r.fs, patterns...)
 	if err != nil {
 		return err
 	}
+	t = t.Funcs(r.FuncMap)
 
 	return t.ExecuteTemplate(w, r.Layout.Name, RenderContext{
 		TemplateFile: name,
@@ -69,7 +74,7 @@ func (r *TemplateRenderer) Render(w io.Writer, name string, data any) error {
 	if err != nil {
 		return err
 	}
-	t, err := template.New(name).Parse(string(content))
+	t, err := template.New(name).Funcs(r.FuncMap).Parse(string(content))
 	if err != nil {
 		return err
 	}
