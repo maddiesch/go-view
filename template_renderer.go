@@ -28,7 +28,9 @@ func NewTemplateRenderer(fs fs.FS) *TemplateRenderer {
 			Name: "layout",
 		},
 		FuncMap: map[string]any{
-			"inGroupsOf": InGroupsOf,
+			"inGroupsOf":   InGroupsOf,
+			"timeSince":    TimeSince,
+			"timeSinceNow": TimeSinceNow,
 		},
 	}
 }

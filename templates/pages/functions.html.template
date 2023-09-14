@@ -8,4 +8,10 @@
   {{- end }}</p>
 {{ end }}
 
+<h1>timeSince</h1>
+{{- timeSince .Data.SourceTime .Data.UpdatedTime }}
+
+<h1>timeSinceNow</h1>
+{{- timeSinceNow .Data.UpdatedTime }}
+
 {{ end }}

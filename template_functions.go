@@ -2,6 +2,7 @@ package view
 
 import (
 	"reflect"
+	"time"
 )
 
 // InGroupsOf splits a slice into groups of size n.
@@ -22,4 +23,12 @@ func InGroupsOf(s any, n int) [][]any {
 	}
 
 	return final
+}
+
+func TimeSinceNow(t time.Time) time.Duration {
+	return time.Since(t)
+}
+
+func TimeSince(s, t time.Time) time.Duration {
+	return s.Sub(t)
 }
